@@ -1,0 +1,217 @@
+<!Doctype html>
+<html lang="ko">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+
+    <!-- 스파르타 강의 4-13 뼈대 -->
+
+    <title>스파르타코딩클럽 | 나홀로 메모장</title>
+
+    <!-- style -->
+    <style type="text/css">
+        @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Black+Han+Sans&family=Dancing+Script&family=Gowun+Dodum&family=Hammersmith+One&family=Nanum+Gothic:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&family=Roboto:wght@500&display=swap');
+
+        * {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .wrap {
+            width: 900px;
+            margin: auto;
+        }
+
+        .comment {
+            color: blue;
+            font-weight: bold;
+        }
+
+        h1 {
+            text-align: center;
+            padding-bottom: 50px;
+        }
+
+        .navbar {
+            margin-top: 50px;
+            padding-bottom: 10px;
+        }
+
+        .lead {
+            padding-top: 16px;
+            padding-left: 10px;
+            margin-right: 30px;
+        }
+
+        #post-box {
+            width: 500px;
+            margin: 20px auto;
+            padding: 50px;
+            border: black solid;
+            border-radius: 5px;
+        }
+
+        .card {
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        .card-body {
+            width: 309px;
+            margin-bottom: 50px;
+            position: relative;
+            float: left;
+        }
+
+        .card-title {
+            font-size: 30px;
+        }
+
+        .card-text {
+            font-size: 20px;
+            padding: 10px;
+            padding-bottom: 140px;
+            margin-right: 22px;
+        }
+
+        .star-btn {
+            position: absolute;
+            bottom: -10%;
+            right: 35%;
+        }
+
+        .delete-btn {
+            position: absolute;
+            bottom: -10%;
+            right: 15%;
+        }
+
+        .card-footer-item {
+            position: absolute;
+            bottom: -10%;
+            right: 35%;
+        }
+
+    </style>
+
+</head>
+
+<body>
+<div class="wrap">
+    <div class="jumbotron">
+        <h1 class="display-4">ENGLISH <br> 영어 단어장</h1>
+        <p class="lead">TOEIC 단어공부, TOEIC 실전 영단어로 시작해보세요 </p>
+        <hr class="my-4">
+        <nav class="navbar navbar-light bg-light">
+            <form class="form-inline">
+                <p class="lead">
+                    <button style="background-color: green" onclick="openClose()" id="btn-post-box" type="button"
+                            class="btn btn-primary">단어 등록하기
+                    </button>
+                </p>
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </nav>
+
+    </div>
+    <div id="post-box" class="form-post" style="display:none">
+        <div>
+            <div class="form-group">
+                <label for="post-url">영어 단어</label>
+                <input id="post-url" class="form-control" placeholder="">
+            </div>
+            <div class="form-group">
+                <label for="post-comment">단어 뜻</label>
+                <textarea id="post-comment" class="form-control" rows="2"></textarea>
+            </div>
+            <button style="background-color: green" type="button" class="btn btn-primary" onclick="postArticle()">등록
+            </button>
+        </div>
+    </div>
+    <div id="cards-box" class="card-columns">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">essential</h5>
+                <br>
+                <p class="card-text" style="background-color: #e9ecef">필수적인; 극히 중요한</p>
+                <button class="btn btn-outline-success my-2 my-sm-0 star-btn" type="submit">
+                    ☆
+                </button>
+                <button class="btn btn-outline-success my-2 my-sm-0 delete-btn"
+                        type="submit">삭제
+                </button>
+            </div>
+        </div>
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">essential</h5>
+                <br>
+                <p class="card-text" style="background-color: #e9ecef">필수적인; 극히 중요한</p>
+                <button class="btn btn-outline-success my-2 my-sm-0 star-btn" type="submit">
+                    ☆
+                </button>
+                <button class="btn btn-outline-success my-2 my-sm-0 delete-btn"
+                        type="submit">삭제
+                </button>
+            </div>
+        </div>
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">essential</h5>
+                <br>
+                <p class="card-text" style="background-color: #e9ecef">필수적인; 극히 중요한</p>
+                <button class="btn btn-outline-success my-2 my-sm-0 star-btn" type="submit">
+                    ☆
+                </button>
+                <button class="btn btn-outline-success my-2 my-sm-0 delete-btn"
+                        type="submit">삭제
+                </button>
+            </div>
+        </div>
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">essential</h5>
+                <br>
+                <p class="card-text" style="background-color: #e9ecef">필수적인; 극히 중요한</p>
+                <button class="btn btn-outline-success my-2 my-sm-0 star-btn" type="submit">
+                    ☆
+                </button>
+                <button class="btn btn-outline-success my-2 my-sm-0 delete-btn"
+                        type="submit">삭제
+                </button>
+            </div>
+        </div>
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">essential</h5>
+                <br>
+                <p class="card-text" style="background-color: #e9ecef">필수적인; 극히 중요한</p>
+                <button class="btn btn-outline-success my-2 my-sm-0 star-btn" type="submit">
+                    ☆
+                </button>
+                <button class="btn btn-outline-success my-2 my-sm-0 delete-btn"
+                        type="submit">삭제
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

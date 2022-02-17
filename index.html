@@ -65,6 +65,7 @@
             border: black solid;
             border-radius: 5px;
         }
+
         .card {
             overflow: hidden;
             box-sizing: border-box;
@@ -72,25 +73,43 @@
 
         .card-body {
             width: 309px;
-            margin-bottom: 100px;
+            margin-bottom: 50px;
             position: relative;
             float: left;
         }
+
         .card-title {
             font-size: 30px;
         }
+
         .card-text {
             font-size: 20px;
+            padding: 10px;
+            padding-bottom: 140px;
+            margin-right: 22px;
         }
-        .card-button {
+
+        .star-btn {
             position: absolute;
-            bottom: 2%;
-            right: 2%;
+            bottom: -10%;
+            right: 35%;
+        }
+
+        .delete-btn {
+            position: absolute;
+            bottom: -10%;
+            right: 15%;
+        }
+
+        .card-footer-item {
+            position: absolute;
+            bottom: -10%;
+            right: 35%;
         }
 
     </style>
     <script>
-        <!-- 새로고침? -->
+        <!-- 새로고침?★ -->
         $(document).ready(function () {
             showArticles();
         });
@@ -126,13 +145,96 @@
                 }
             })
         }
+
+            $(document).ready(function () {
+                showStar();
+            });
+
+            function showStar() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/list?sample_give=샘플데이터',
+                    data: {},
+                    success: function (response) {
+                        let mystars = response['movie_stars']
+                        for (let i = 0; i < mystars.length; i++) {
+                            let name = mystars[i]['name']
+                            let img_url = mystars[i]['img_url']
+                            let recent = mystars[i]['recent']
+                            let url = mystars[i]['url']
+                            let like = mystars[i]['like']
+
+                            let temp_html = `<div class="card">
+                                                <div class="card-content">
+                                                    <div class="media">
+                                                        <div class="media-left">
+                                                            <figure class="image is-48x48">
+                                                                <img
+                                                                        src="${img_url}"
+                                                                        alt="Placeholder image"
+                                                                />
+                                                            </figure>
+                                                        </div>
+                                                        <div class="media-content">
+                                                            <a href="${url}" target="_blank" class="star-name title is-4">${name} (좋아요: ${like})</a>
+                                                            <p class="subtitle is-6">${recent}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <footer class="card-footer">
+                                                    <a href="#" onclick="likeStar('${name}')" class="card-footer-item has-text-info">
+                                                        위로!
+                                                        <span class="icon">
+                                              <i class="fas fa-thumbs-up"></i>
+                                            </span>
+                                                    </a>
+                                                    <a href="#" onclick="deleteStar('${name}')" class="card-footer-item has-text-danger">
+                                                        삭제
+                                                        <span class="icon">
+                                              <i class="fas fa-ban"></i>
+                                            </span>
+                                                    </a>
+                                                </footer>
+                                            </div>`
+                            $('#star-box').append(temp_html)
+
+
+                        }
+                    }
+                });
+            }
+
+                function likeStar(name)
+            {
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/like',
+                    data: {name_give: name},
+                    success: function (response) {
+                        alert(response['msg']);
+                        window.location.reload()
+                    }
+                });
+            }
+
+            function deleteStar(name) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/delete',
+                    data: {name_give: name},
+                    success: function (response) {
+                        alert(response['msg']);
+                        window.location.reload()
+                    }
+                });
+            }
     </script>
 
 </head>
 
 <body>
 <div class="wrap">
-    <div  class="jumbotron">
+    <div class="jumbotron">
         <h1 class="display-4">TOEIC <br> 실전 영단어</h1>
         <p class="lead">TOEIC 단어공부, TOEIC 실전 영단어로 시작해보세요 </p>
         <hr class="my-4">
@@ -159,7 +261,8 @@
                 <label for="post-comment">단어 뜻</label>
                 <textarea id="post-comment" class="form-control" rows="2"></textarea>
             </div>
-            <button style="background-color: green" type="button" class="btn btn-primary" onclick="postArticle()">등록</button>
+            <button style="background-color: green" type="button" class="btn btn-primary" onclick="postArticle()">등록
+            </button>
         </div>
     </div>
     <div id="cards-box" class="card-columns">
@@ -167,45 +270,69 @@
             <div class="card-body">
                 <h5 class="card-title">essential</h5>
                 <br>
-                <p class="card-text">필수적인; 극히 중요한</p>
-                <a href="#" class="btn btn-primary" style="background-color: green">☆★</a>
-                <a href="#" class="btn btn-primary" style="background-color: green">삭제</a>
+                <p class="card-text" style="background-color: #e9ecef">필수적인; 극히 중요한</p>
+                <!--
+                <a href="#" onclick="likeStar('김다미')" class="card-footer-item has-text-info btn btn-outline-success star-btn">☆</a>
+                <a href="#" onclick="deleteStar('김다미')" class="card-footer-item has-text-info btn btn-outline-success star-btn">삭제</a>
+                -->
+                <button onclick="likeStar('김다미')" class="btn btn-outline-success my-2 my-sm-0 star-btn" type="submit">
+                    ☆
+                </button>
+                <button onclick="deleteStar('김다미')" class="btn btn-outline-success my-2 my-sm-0 delete-btn"
+                        type="submit">삭제
+                </button>
             </div>
         </div>
         <div class="card" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title">essential</h5>
                 <br>
-                <p class="card-text">필수적인; 극히 중요한</p>
-                <a href="#" class="btn card-button" style="background-color: green">☆★</a>
-                <a href="#" class="btn card-button" style="background-color: green">삭제</a>
+                <p class="card-text" style="background-color: #e9ecef">필수적인; 극히 중요한</p>
+                <button onclick="likeStar('김다미')" class="btn btn-outline-success my-2 my-sm-0 star-btn" type="submit">
+                    ☆
+                </button>
+                <button onclick="deleteStar('김다미')" class="btn btn-outline-success my-2 my-sm-0 delete-btn"
+                        type="submit">삭제
+                </button>
             </div>
         </div>
         <div class="card" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title">essential</h5>
                 <br>
-                <p class="card-text">필수적인; 극히 중요한</p>
-                <a href="#" class="btn btn-primary" style="background-color: green">☆★</a>
-                <a href="#" class="btn btn-primary" style="background-color: green">삭제</a>
+                <p class="card-text" style="background-color: #e9ecef">필수적인; 극히 중요한</p>
+                <button onclick="likeStar('김다미')" class="btn btn-outline-success my-2 my-sm-0 star-btn" type="submit">
+                    ☆
+                </button>
+                <button onclick="deleteStar('김다미')" class="btn btn-outline-success my-2 my-sm-0 delete-btn"
+                        type="submit">삭제
+                </button>
             </div>
         </div>
         <div class="card" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title">essential</h5>
                 <br>
-                <p class="card-text">필수적인; 극히 중요한</p>
-                <a href="#" class="btn btn-primary" style="background-color: green">☆★</a>
-                <a href="#" class="btn btn-primary" style="background-color: green">삭제</a>
+                <p class="card-text" style="background-color: #e9ecef">필수적인; 극히 중요한</p>
+                <button onclick="likeStar('김다미')" class="btn btn-outline-success my-2 my-sm-0 star-btn" type="submit">
+                    ☆
+                </button>
+                <button onclick="deleteStar('김다미')" class="btn btn-outline-success my-2 my-sm-0 delete-btn"
+                        type="submit">삭제
+                </button>
             </div>
         </div>
         <div class="card" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title">essential</h5>
                 <br>
-                <p class="card-text">필수적인; 극히 중요한</p>
-                <a href="#" class="btn btn-primary" style="background-color: green">☆★</a>
-                <a href="#" class="btn btn-primary" style="background-color: green">삭제</a>
+                <p class="card-text" style="background-color: #e9ecef">필수적인; 극히 중요한</p>
+                <button onclick="likeStar('김다미')" class="btn btn-outline-success my-2 my-sm-0 star-btn" type="submit">
+                    ☆
+                </button>
+                <button onclick="deleteStar('김다미')" class="btn btn-outline-success my-2 my-sm-0 delete-btn"
+                        type="submit">삭제
+                </button>
             </div>
         </div>
     </div>

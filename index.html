@@ -59,6 +59,10 @@
             background-color: white;
         }
 
+        #btn-post-box {
+            border: forestgreen;
+        }
+
         .navbar {
             margin-top: 15px;
             padding-bottom: 10px;
@@ -113,7 +117,6 @@
             box-sizing: border-box;
             font-size: 25px;
             padding: 0px;
-            padding-bottom: 36px;
             overflow: hidden;
         }
 
@@ -127,6 +130,8 @@
             position: absolute;
             bottom: -10%;
             right: 36%;
+            width: 38px;
+            height: 38px;
             color: green;
 
         }
@@ -149,11 +154,27 @@
             }
         }
 
+        function postVoca() {
+            let voca = $('#voca_give').val()
+            let meaning = $('#meaning_give').val()
+            let like = $('#like_give').val()
+
+            $.ajax({
+                type: "POST",
+                url: "/api/postvoca",
+                data: {voca_give: voca, meaning_give: meaning, like_give: like},
+                success: function (response) {
+                    alert(response["msg"]);
+                    window.location.reload();
+                }
+            })
+        }
+
         $(document).ready(function () {
-            showStar();
+            showVoca();
         });
 
-        function showStar() {
+        function showVoca() {
             $.ajax({
                 type: 'GET',
                 url: '/api/list',
@@ -169,11 +190,11 @@
                                                 <h5 class="card-title">${voca}</h5>
                                                 <br>
                                                 <p class="card-text" style="background-color: #e9ecef">${meaning}</p>
-                                                <button onclick="likeStar('${voca}')" class="btn btn-outline-success my-2 my-sm-0 star-btn"
+                                                <button onclick="likeVoca('${voca}')" class="btn btn-outline-success my-2 my-sm-0 star-btn"
                                                         type="submit">
                                                     ☆
                                                 </button>
-                                                <a onclick="likeStar('${voca}')" class="btn btn-outline-success my-2 my-sm-0 number-btn"
+                                                <a onclick="likeVoca('${voca}')" class="btn btn-outline-success my-2 my-sm-0 number-btn"
                                                         type="submit" style="color: forestgreen">
                                                     ${like}
                                                 </a>
@@ -188,7 +209,7 @@
             });
         }
 
-        function likeStar(voca) {
+        function likeVoca(voca) {
             $.ajax({
                 type: 'POST',
                 url: '/api/like',
@@ -222,14 +243,18 @@
     <div id="post-box" class="form-post" style="display:none">
         <div>
             <div class="form-group">
-                <label for="post-url">영어 단어</label>
-                <input id="post-url" class="form-control" placeholder="">
+                <label for="voca_give">영어 단어</label>
+                <input id="voca_give" class="form-control" placeholder="">
             </div>
             <div class="form-group">
-                <label for="post-comment">단어 뜻</label>
-                <textarea id="post-comment" class="form-control" rows="2"></textarea>
+                <label for="meaning_give">단어 뜻</label>
+                <textarea id="meaning_give" class="form-control" rows="2"></textarea>
             </div>
-            <button style="background-color: green" type="button" class="btn btn-primary" onclick="postArticle()">등록
+            <div class="form-group">
+                <label for="like_give">중요도</label>
+                <input id="like_give" class="form-control" placeholder="">
+            </div>
+            <button style="background-color: green" type="button" class="btn btn-primary" onclick="postVoca()">등록
             </button>
         </div>
     </div>

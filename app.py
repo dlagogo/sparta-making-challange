@@ -23,17 +23,26 @@ def home():
 
 
 ## API 역할을 하는 부분
-#@app.route('/memo', methods=['POST'])
-#def saving():
- #   sample_receive = request.form['sample_give']
-  #  print(sample_receive)
-   # return jsonify({'msg': '등록되었습니다!'})
+@app.route('/api/postvoca', methods=['POST'])
+def post_voca():
+    voca_receive = request.form['voca_give']
+    meaning_receive = request.form['meaning_give']
+    like_receive = request.form['like_give']
+
+    doc = {
+        'voca': voca_receive,
+        'meaning': meaning_receive,
+        'like': like_receive
+    }
+
+    db.voca.insert_one(doc)
+    return jsonify({'msg': '이 요청은 POST!'})
 
 ## 즐겨찾기,삭제하기
 
 # API 역할을 하는 부분
 @app.route('/api/list', methods=['GET'])
-def show_vocas():
+def show_voca():
     voca = list(db.voca.find({}, {'_id': False}).sort('like',-1))
     return jsonify({'vocas': voca})
 @app.route('/api/like', methods=['POST'])

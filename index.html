@@ -94,6 +94,13 @@
             position: absolute;
             bottom: -10%;
             right: 50%;
+            width: 38px;
+            height: 38px;
+            box-sizing: border-box;
+            font-size: 25px;
+            padding: 0px;
+            padding-bottom: 36px;
+            overflow: hidden;
         }
 
         .delete-btn {
@@ -105,7 +112,8 @@
         .number-btn {
             position: absolute;
             bottom: -10%;
-            right: 35%;
+            right: 36%;
+            color: green;
         }
 
         .card-footer-item {
@@ -154,10 +162,10 @@
                                                         type="submit">
                                                     ☆
                                                 </button>
-                                                <button onclick="likeStar('essential')" class="btn btn-outline-success my-2 my-sm-0 number-btn"
+                                                <a class="btn btn-outline-success my-2 my-sm-0 number-btn"
                                                         type="submit">
-                                                    [${like}]
-                                                </button>
+                                                    ${like}
+                                                </a>
                                                 <button onclick="deleteStar('${voca}')" class="btn btn-outline-success my-2 my-sm-0 delete-btn"
                                                         type="submit">삭제
                                                 </button>
@@ -223,24 +231,7 @@
     </div>
     <div id="cards-box" class="card-columns">
         <div class="voca-box" id="voca-box">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">essential</h5>
-                    <br>
-                    <p class="card-text" style="background-color: #e9ecef">필수적인; 극히 중요한</p>
-                    <button onclick="likeStar('essential')" class="btn btn-outline-success my-2 my-sm-0 star-btn"
-                            type="submit">
-                        ☆
-                    </button>
-                    <button onclick="likeStar('essential')" class="btn btn-outline-success my-2 my-sm-0 number-btn"
-                            type="submit">
-                        [ ]
-                    </button>
-                    <button onclick="deleteStar('essential')" class="btn btn-outline-success my-2 my-sm-0 delete-btn"
-                            type="submit">삭제
-                    </button>
-                </div>
-            </div>
+
         </div>
     </div>
 </div>

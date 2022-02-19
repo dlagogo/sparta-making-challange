@@ -1,10 +1,243 @@
-<!DOCTYPE html>
-<html lang="en">
+<!Doctype html>
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="shortcut icon" href="data:image/x-icon;" type="image/x-icon">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+    <!-- 스파르타 강의 4-13 뼈대 -->
+    <title>스파르타코딩클럽 | 나홀로 메모장</title>
+    <!-- style -->
+    <style type="text/css">
+        @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Black+Han+Sans&family=Dancing+Script&family=Gowun+Dodum&family=Hammersmith+One&family=Nanum+Gothic:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&family=Roboto:wght@500&display=swap');
+
+        * {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .wrap {
+            width: 900px;
+            margin: auto;
+        }
+
+        .comment {
+            color: blue;
+            font-weight: bold;
+        }
+
+        .jumbotron {
+            padding: 30px;
+        }
+
+        .display-4 {
+            text-align: center;
+            letter-spacing: 5px;
+            font-size: 150px;
+            color: white;
+            background-color: forestgreen;
+            margin-bottom: 0px;
+
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 120px;
+            letter-spacing: 3px;
+            font-weight: 20px;
+            color: forestgreen;
+            background-color: white;
+        }
+
+        .navbar {
+            margin-top: 15px;
+            padding-bottom: 10px;
+        }
+
+        .lead {
+            padding-top: 16px;
+            padding-left: 10px;
+            margin-right: 20px;
+        }
+
+        #post-box {
+            width: 500px;
+            margin: 20px auto;
+            padding: 50px;
+            border: black solid;
+            border-radius: 5px;
+        }
+
+        .card {
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        .card-body {
+            width: 309px;
+            height: 309px;
+            margin-bottom: 50px;
+            position: relative;
+            float: left;
+        }
+
+        .card-title {
+            font-size: 30px;
+            margin: 0px;
+        }
+
+        .card-text {
+            width: 247px;
+            height: 180px;
+            font-size: 20px;
+            padding: 20px 15px 155px 15px;
+            margin-right: 22px;
+        }
+
+        .star-btn {
+            position: absolute;
+            bottom: -10%;
+            right: 50%;
+            width: 38px;
+            height: 38px;
+            box-sizing: border-box;
+            font-size: 25px;
+            padding: 0px;
+            padding-bottom: 36px;
+            overflow: hidden;
+        }
+
+        .delete-btn {
+            position: absolute;
+            bottom: -10%;
+            right: 15%;
+        }
+
+        .number-btn {
+            position: absolute;
+            bottom: -10%;
+            right: 36%;
+            color: green;
+
+        }
+
+        .card-footer-item {
+            position: absolute;
+            bottom: -10%;
+            right: 35%;
+        }
+    </style>
+    <script>
+        <!-- 새로고침?★ -->
+        function openClose() {
+            if ($("#post-box").css("display") == "block") {
+                $("#post-box").hide();
+                $("#btn-post-box").text("단어 등록하기");
+            } else {
+                $("#post-box").show();
+                $("#btn-post-box").text("단어 등록완료");
+            }
+        }
+
+        $(document).ready(function () {
+            showStar();
+        });
+
+        function showStar() {
+            $.ajax({
+                type: 'GET',
+                url: '/api/list',
+                data: {},
+                success: function (response) {
+                    let vocas = response['vocas']
+                    for (let i = 0; i < vocas.length; i++) {
+                        let voca = vocas[i]['voca']
+                        let meaning = vocas[i]['meaning']
+                        let like = vocas[i]['like']
+                        let temp_html = `<div class="card" style="width: 18rem;">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${voca}</h5>
+                                                <br>
+                                                <p class="card-text" style="background-color: #e9ecef">${meaning}</p>
+                                                <button onclick="likeStar('${voca}')" class="btn btn-outline-success my-2 my-sm-0 star-btn"
+                                                        type="submit">
+                                                    ☆
+                                                </button>
+                                                <a onclick="likeStar('${voca}')" class="btn btn-outline-success my-2 my-sm-0 number-btn"
+                                                        type="submit" style="color: forestgreen">
+                                                    ${like}
+                                                </a>
+                                                <button onclick="deleteStar('${voca}')" class="btn btn-outline-success my-2 my-sm-0 delete-btn"
+                                                        type="submit">삭제
+                                                </button>
+                                            </div>
+                                        </div>`
+                        $('#voca-box').append(temp_html)
+                    }
+                }
+            });
+        }
+
+        function likeStar(voca) {
+            $.ajax({
+                type: 'POST',
+                url: '/api/like',
+                data: {voca_give: voca},
+                success: function (response) {
+                    alert(response['msg']);
+                    window.location.reload()
+                }
+            });
+        }
+    </script>
 </head>
 <body>
+<div class="wrap">
+    <div class="jumbotron">
+        <h1 class="display-4">ENGLISH</h1>
+        <p class="subtitle">Vocabulary</p>
+        <hr class="my-4">
+        <nav class="navbar navbar-light bg-light">
+            <form class="form-inline">
+                <p class="lead">
+                    <button style="background-color: forestgreen" onclick="openClose()" id="btn-post-box" type="button"
+                            class="btn btn-primary">단어 등록
+                    </button>
+                </p>
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+        </nav>
+    </div>
+    <div id="post-box" class="form-post" style="display:none">
+        <div>
+            <div class="form-group">
+                <label for="post-url">영어 단어</label>
+                <input id="post-url" class="form-control" placeholder="">
+            </div>
+            <div class="form-group">
+                <label for="post-comment">단어 뜻</label>
+                <textarea id="post-comment" class="form-control" rows="2"></textarea>
+            </div>
+            <button style="background-color: green" type="button" class="btn btn-primary" onclick="postArticle()">등록
+            </button>
+        </div>
+    </div>
+    <div id="cards-box" class="card-columns">
+        <div class="voca-box" id="voca-box">
 
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -1,342 +1,164 @@
-<!Doctype html>
-<html lang="ko">
+<!doctype html>
+<html lang="en">
 
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="RE:TRO | 그때 그 시절, 당신의 음악"/>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-          crossorigin="anonymous">
+    <title>RE:TRO | 그때 그 시절, 당신의 음악</title>
+    <link rel="stylesheet" type="text/css" href="reset.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
 
-    <!-- JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-
-    <!-- 구글폰트 -->
-    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
-
-    <!-- 스파르타 강의 4-13 뼈대 -->
-
-    <title>스파르타코딩클럽 | 나홀로 메모장</title>
-
-    <!-- style -->
-    <style type="text/css">
-        @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Black+Han+Sans&family=Dancing+Script&family=Gowun+Dodum&family=Hammersmith+One&family=Nanum+Gothic:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&family=Roboto:wght@500&display=swap');
-
-        * {
-            font-family: 'Roboto', sans-serif;
-        }
-
-        .wrap {
-            width: 900px;
-            margin: auto;
-        }
-
-        .comment {
-            color: blue;
-            font-weight: bold;
-        }
-
-        h1 {
-            text-align: center;
-            padding-bottom: 50px;
-        }
-
-        .navbar {
-            margin-top: 50px;
-            padding-bottom: 10px;
-        }
-
-        .lead {
-            padding-top: 16px;
-            padding-left: 10px;
-            margin-right: 30px;
-        }
-
-        #post-box {
-            width: 500px;
-            margin: 20px auto;
-            padding: 50px;
-            border: black solid;
-            border-radius: 5px;
-        }
-
-        .card {
-            overflow: hidden;
-            box-sizing: border-box;
-        }
-
-        .card-body {
-            width: 309px;
-            margin-bottom: 50px;
-            position: relative;
-            float: left;
-        }
-
-        .card-title {
-            font-size: 30px;
-        }
-
-        .card-text {
-            font-size: 20px;
-            padding: 10px;
-            padding-bottom: 140px;
-            margin-right: 22px;
-        }
-
-        .star-btn {
-            position: absolute;
-            bottom: -10%;
-            right: 35%;
-        }
-
-        .delete-btn {
-            position: absolute;
-            bottom: -10%;
-            right: 15%;
-        }
-
-        .card-footer-item {
-            position: absolute;
-            bottom: -10%;
-            right: 35%;
-        }
-
-    </style>
-    <script>
-        <!-- 새로고침?★ -->
-        $(document).ready(function () {
-            showArticles();
-        });
-
-        function openClose() {
-            if ($("#post-box").css("display") == "block") {
-                $("#post-box").hide();
-                $("#btn-post-box").text("단어 등록하기");
-            } else {
-                $("#post-box").show();
-                $("#btn-post-box").text("단어 등록완료");
-            }
-        }
-
-        function postArticle() {
-            $.ajax({
-                type: "POST",
-                url: "/memo",
-                data: {sample_give: '샘플데이터'},
-                success: function (response) { // 성공하면
-                    alert(response["msg"]);
-                }
-            })
-        }
-
-        function showArticles() {
-            $.ajax({
-                type: "GET",
-                url: "/memo?sample_give=샘플데이터",
-                data: {},
-                success: function (response) {
-                    alert(response["msg"]);
-                }
-            })
-        }
-
-            $(document).ready(function () {
-                showStar();
-            });
-
-            function showStar() {
-                $.ajax({
-                    type: 'GET',
-                    url: '/api/list?sample_give=샘플데이터',
-                    data: {},
-                    success: function (response) {
-                        let mystars = response['movie_stars']
-                        for (let i = 0; i < mystars.length; i++) {
-                            let name = mystars[i]['name']
-                            let img_url = mystars[i]['img_url']
-                            let recent = mystars[i]['recent']
-                            let url = mystars[i]['url']
-                            let like = mystars[i]['like']
-
-                            let temp_html = `<div class="card">
-                                                <div class="card-content">
-                                                    <div class="media">
-                                                        <div class="media-left">
-                                                            <figure class="image is-48x48">
-                                                                <img
-                                                                        src="${img_url}"
-                                                                        alt="Placeholder image"
-                                                                />
-                                                            </figure>
-                                                        </div>
-                                                        <div class="media-content">
-                                                            <a href="${url}" target="_blank" class="star-name title is-4">${name} (좋아요: ${like})</a>
-                                                            <p class="subtitle is-6">${recent}</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <footer class="card-footer">
-                                                    <a href="#" onclick="likeStar('${name}')" class="card-footer-item has-text-info">
-                                                        위로!
-                                                        <span class="icon">
-                                              <i class="fas fa-thumbs-up"></i>
-                                            </span>
-                                                    </a>
-                                                    <a href="#" onclick="deleteStar('${name}')" class="card-footer-item has-text-danger">
-                                                        삭제
-                                                        <span class="icon">
-                                              <i class="fas fa-ban"></i>
-                                            </span>
-                                                    </a>
-                                                </footer>
-                                            </div>`
-                            $('#star-box').append(temp_html)
-
-
-                        }
-                    }
-                });
-            }
-
-                function likeStar(name)
-            {
-                $.ajax({
-                    type: 'POST',
-                    url: '/api/like',
-                    data: {name_give: name},
-                    success: function (response) {
-                        alert(response['msg']);
-                        window.location.reload()
-                    }
-                });
-            }
-
-            function deleteStar(name) {
-                $.ajax({
-                    type: 'POST',
-                    url: '/api/delete',
-                    data: {name_give: name},
-                    success: function (response) {
-                        alert(response['msg']);
-                        window.location.reload()
-                    }
-                });
-            }
-    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet">
 
 </head>
-
 <body>
-<div class="wrap">
-    <div class="jumbotron">
-        <h1 class="display-4">TOEIC <br> 실전 영단어</h1>
-        <p class="lead">TOEIC 단어공부, TOEIC 실전 영단어로 시작해보세요 </p>
-        <hr class="my-4">
-        <nav class="navbar navbar-light bg-light">
-            <form class="form-inline">
-                <p class="lead">
-                    <button style="background-color: green" onclick="openClose()" id="btn-post-box" type="button"
-                            class="btn btn-primary">단어 등록하기
-                    </button>
-                </p>
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </nav>
-
+<header id="header">
+    <div id="logo">
+        <img src="./reteo_logo.png" width="91px" height="26px"/>
     </div>
-    <div id="post-box" class="form-post" style="display:none">
-        <div>
-            <div class="form-group">
-                <label for="post-url">영어 단어</label>
-                <input id="post-url" class="form-control" placeholder="">
-            </div>
-            <div class="form-group">
-                <label for="post-comment">단어 뜻</label>
-                <textarea id="post-comment" class="form-control" rows="2"></textarea>
-            </div>
-            <button style="background-color: green" type="button" class="btn btn-primary" onclick="postArticle()">등록
-            </button>
+    <nav id="nav">
+        <div id="nav_left">
+            <ul>
+                <li><a href="#">음악성향테스트</a></li>
+                <li><a href="#">보관함</a></li>
+                <div id="searchbox">
+                    <input>
+                </div>
+            </ul>
         </div>
-    </div>
-    <div id="cards-box" class="card-columns">
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">essential</h5>
-                <br>
-                <p class="card-text" style="background-color: #e9ecef">필수적인; 극히 중요한</p>
-                <!--
-                <a href="#" onclick="likeStar('김다미')" class="card-footer-item has-text-info btn btn-outline-success star-btn">☆</a>
-                <a href="#" onclick="deleteStar('김다미')" class="card-footer-item has-text-info btn btn-outline-success star-btn">삭제</a>
-                -->
-                <button onclick="likeStar('김다미')" class="btn btn-outline-success my-2 my-sm-0 star-btn" type="submit">
-                    ☆
-                </button>
-                <button onclick="deleteStar('김다미')" class="btn btn-outline-success my-2 my-sm-0 delete-btn"
-                        type="submit">삭제
-                </button>
+        <div id="nav_right">
+            <ul>
+                <li><a href="#">RE:TRO 소개</a></li>
+                <li><a href="#">로그인</a></li>
+                <li><a href="#">회원가입</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<div id="wrap">
+    <section id="main">
+        <div id="chart">
+            <section id="section_head">
+                <h2>RE:TRO 차트</h2>
+            </section>
+            <section id="section_albumchart">
+                <div class="albumchart-box">
+                    <div id="albumchart_img">
+                        <img src="https://cdn.music-flo.com/image/v2/album/065/520/07/04/407520065_62046e9b_s.jpg?1644457630716/dims/resize/500x500/quality/90"
+                             width="187px" height="188px" style="border-radius:15px"/>
+                    </div>
+                    <div id="albumchart_desc">
+                        <span id="albumchart_rank">1</span>
+                        <span id="albumchart_song">INVU</span>
+                        <span id="albumchart_artist">태연</span>
+                    </div>
+                </div>
+                <div class="albumchart-box">
+                    <div id="albumchart_img">
+                        <img src="https://cdn.music-flo.com/image/v2/album/065/520/07/04/407520065_62046e9b_s.jpg?1644457630716/dims/resize/500x500/quality/90"
+                             width="187px" height="188px" style="border-radius:15px"/>
+                    </div>
+                    <div id="albumchart_desc">
+                        <span id="albumchart_rank">1</span>
+                        <span id="albumchart_song">INVU</span>
+                        <span id="albumchart_artist">태연</span>
+                    </div>
+                </div>
+                <div class="albumchart-box">
+                    <div id="albumchart_img">
+                        <img src="https://cdn.music-flo.com/image/v2/album/065/520/07/04/407520065_62046e9b_s.jpg?1644457630716/dims/resize/500x500/quality/90"
+                             width="187px" height="188px" style="border-radius:15px"/>
+                    </div>
+                    <div id="albumchart_desc">
+                        <span id="albumchart_rank">1</span>
+                        <span id="albumchart_song">INVU</span>
+                        <span id="albumchart_artist">태연</span>
+                    </div>
+                </div>
+                <div class="albumchart-box">
+                    <div id="albumchart_img">
+                        <img src="https://cdn.music-flo.com/image/v2/album/065/520/07/04/407520065_62046e9b_s.jpg?1644457630716/dims/resize/500x500/quality/90"
+                             width="187px" height="188px" style="border-radius:15px"/>
+                    </div>
+                    <div id="albumchart_desc">
+                        <span id="albumchart_rank">1</span>
+                        <span id="albumchart_song">INVU</span>
+                        <span id="albumchart_artist">태연</span>
+                    </div>
+                </div>
+                <div class="albumchart-box">
+                    <div id="albumchart_img">
+                        <img src="https://cdn.music-flo.com/image/v2/album/065/520/07/04/407520065_62046e9b_s.jpg?1644457630716/dims/resize/500x500/quality/90"
+                             width="187px" height="188px" style="border-radius:15px"/>
+                    </div>
+                    <div id="albumchart_desc">
+                        <span id="albumchart_rank">1</span>
+                        <span id="albumchart_song">INVU</span>
+                        <span id="albumchart_artist">태연</span>
+                    </div>
+                </div>
+                <div class="albumchart-box">
+                    <div id="albumchart_img">
+                        <img src="https://cdn.music-flo.com/image/v2/album/065/520/07/04/407520065_62046e9b_s.jpg?1644457630716/dims/resize/500x500/quality/90"
+                             width="187px" height="188px" style="border-radius:15px"/>
+                    </div>
+                    <div id="albumchart_desc">
+                        <span id="albumchart_rank">1</span>
+                        <span id="albumchart_song">INVU</span>
+                        <span id="albumchart_artist">태연</span>
+                    </div>
+                </div>
+            </section>
+            <section id="section_rankchart">
+                <div id="year-btn">
+                    <input type="button" class="btn" value="1980"/>
+                    <input type="button" class="btn" value="1990"/>
+                    <input type="button" class="btn" value="2000"/>
+                    <input type="button" class="btn" value="2010"/>
+                </div>
+                <div id="rankchart-box">
+                    <table id="rankchart-table">
+                        <tr id="rankchart-row">
+                            <td>
+                                <div id="rankchart_img">
+                                    <img src="https://cdn.music-flo.com/image/v2/album/065/520/07/04/407520065_62046e9b_s.jpg?1644457630716/dims/resize/500x500/quality/90"
+                                         width="50px" height="50px" style="border-radius:10px"/>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="rankchart_rank">1</div>
+                            </td>
+                            <td>
+                                <div id="rankchart_desc">
+                                    <div id="rankchart_song">INVU</div>
+                                    <div id="rankchar_artist">태연</div>
+                                </div>
+                            </td>
+                    </table>
+                </div>
+            </section>
+        </div>
+        <div id="banner_test">
+            <img src="./main_bn_01.jpg" width="1126px" height="136px"/>
+            <div id="test">
+                <div id="banner_text">
+                    <span id="bannerTest-title">나만의 음악 성향을 알아보고, 추억을 들어보세요.</span><br>
+                    <span id="bannerTest-text">오직, RE:TRO 에서만 경험 할 수 있는 나만의 음악 성향 검사</span>
+                </div>
+                <div id="banner_btn">
+                    <input type="button" class="banner_btn" value="음악 성향 알아보기"/>
+                </div>
             </div>
         </div>
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">essential</h5>
-                <br>
-                <p class="card-text" style="background-color: #e9ecef">필수적인; 극히 중요한</p>
-                <button onclick="likeStar('김다미')" class="btn btn-outline-success my-2 my-sm-0 star-btn" type="submit">
-                    ☆
-                </button>
-                <button onclick="deleteStar('김다미')" class="btn btn-outline-success my-2 my-sm-0 delete-btn"
-                        type="submit">삭제
-                </button>
-            </div>
-        </div>
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">essential</h5>
-                <br>
-                <p class="card-text" style="background-color: #e9ecef">필수적인; 극히 중요한</p>
-                <button onclick="likeStar('김다미')" class="btn btn-outline-success my-2 my-sm-0 star-btn" type="submit">
-                    ☆
-                </button>
-                <button onclick="deleteStar('김다미')" class="btn btn-outline-success my-2 my-sm-0 delete-btn"
-                        type="submit">삭제
-                </button>
-            </div>
-        </div>
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">essential</h5>
-                <br>
-                <p class="card-text" style="background-color: #e9ecef">필수적인; 극히 중요한</p>
-                <button onclick="likeStar('김다미')" class="btn btn-outline-success my-2 my-sm-0 star-btn" type="submit">
-                    ☆
-                </button>
-                <button onclick="deleteStar('김다미')" class="btn btn-outline-success my-2 my-sm-0 delete-btn"
-                        type="submit">삭제
-                </button>
-            </div>
-        </div>
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">essential</h5>
-                <br>
-                <p class="card-text" style="background-color: #e9ecef">필수적인; 극히 중요한</p>
-                <button onclick="likeStar('김다미')" class="btn btn-outline-success my-2 my-sm-0 star-btn" type="submit">
-                    ☆
-                </button>
-                <button onclick="deleteStar('김다미')" class="btn btn-outline-success my-2 my-sm-0 delete-btn"
-                        type="submit">삭제
-                </button>
-            </div>
-        </div>
-    </div>
+    </section>
 </div>
+<footer>푸터</footer>
 </body>
 
 </html>
